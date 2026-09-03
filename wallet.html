@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محفظتي | مسار</title>
+<meta name="description" content="اشحن رصيدك وتابع معاملاتك المالية على منصة مسار للتدريب.">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- Firebase (compat SDK - سهل الاستخدام بدون أدوات بناء) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+  :root{
+    --navy:#0B1220;
+    --navy-2:#111A2E;
+    --orange:#F59E0B;
+    --orange-light:#FBBF24;
+    --blue:#2563EB;
+  }
+  *{font-family:'Tajawal', sans-serif;}
+  html{scroll-behavior:smooth;}
+  body{background:#070B14; color:#E6EAF2;}
+
+  .brand-grad{
+    background: linear-gradient(90deg, var(--orange-light), var(--orange));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .glass{
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+  }
+  .btn-primary{
+    background: linear-gradient(90deg, var(--orange-light), var(--orange));
+    color:#0B1220;
+    box-shadow: 0 10px 30px -8px rgba(245,158,11,.55);
+    transition: all .25s ease;
+  }
+  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 16px 36px -8px rgba(245,158,11,.7); }
+  .btn-primary:disabled{ opacity:.5; cursor:not-allowed; transform:none; }
+  .btn-ghost{ border:1px solid rgba(255,255,255,.18); transition: all .25s ease; }
+  .btn-ghost:hover{ background: rgba(255,255,255,.06); }
+  .btn-whatsapp{
+    background: linear-gradient(90deg, #25D366, #1EBE57);
+    color:#08170D;
+    transition: all .25s ease;
+  }
+  .btn-whatsapp:hover{ transform: translateY(-2px); }
+
+  .wallet-card{
+    background: linear-gradient(135deg, rgba(245,158,11,.15), rgba(37,99,235,.15));
+    border: 1px solid rgba(245,158,11,.25);
+  }
+
+  .method-card{ transition: all .2s ease; cursor:pointer; }
+  .method-card.selected{ border-color: var(--orange) !important; background: rgba(245,158,11,.08); }
+
+  .status-pending{ background: rgba(245,158,11,.15); color:#FBBF24; }
+  .status-completed{ background: rgba(34,197,94,.15); color:#4ADE80; }
+  .status-rejected{ background: rgba(239,68,68,.15); color:#F87171; }
+
+  .spinner{
+    border: 3px solid rgba(255,255,255,.1);
+    border-top-color: var(--orange);
+    border-radius:50%;
+    width:24px; height:24px;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  ::-webkit-scrollbar{ width:10px; }
+  ::-webkit-scrollbar-track{ background:#0B1220; }
+  ::-webkit-scrollbar-thumb{ background: linear-gradient(var(--orange), var(--blue)); border-radius: 10px; }
+</style>
+</head>
+<body class="antialiased min-h-screen">
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="border-b border-white/5">
+  <div class="max-w-5xl mx-auto px-5 md:px-8 h-20 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center">
+        <i data-lucide="route" class="w-5 h-5 text-[#0B1220]"></i>
+      </div>
+      <span class="font-extrabold text-lg"><span class="brand-grad">مسار</span></span>
+    </a>
+    <div class="flex items-center gap-3">
+      <span id="userEmailLabel" class="text-sm text-gray-400 hidden md:inline"></span>
+      <button id="logoutBtn" class="hidden btn-ghost text-sm font-bold px-4 py-2 rounded-full">تسجيل الخروج</button>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-5xl mx-auto px-5 md:px-8 py-10">
+
+  <!-- ===================== AUTH GATE (شاشة الدخول) ===================== -->
+  <section id="authGate" class="max-w-md mx-auto mt-10">
+    <div class="glass rounded-3xl p-8">
+      <h1 class="text-2xl font-black mb-2 text-center">محفظتي</h1>
+      <p class="text-gray-400 text-sm text-center mb-8">سجّل دخولك لإدارة رصيدك ومتابعة معاملاتك</p>
+
+      <div class="flex gap-2 mb-6 p-1 rounded-full glass">
+        <button id="tabLogin" class="flex-1 py-2 rounded-full text-sm font-bold bg-white/10">تسجيل الدخول</button>
+        <button id="tabRegister" class="flex-1 py-2 rounded-full text-sm font-bold text-gray-400">حساب جديد</button>
+      </div>
+
+      <form id="authForm" class="space-y-4">
+        <div>
+          <label class="text-xs text-gray-400 mb-1 block">البريد الإلكتروني</label>
+          <input type="email" id="authEmail" required
+            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-400"
+            placeholder="you@example.com">
+        </div>
+        <div>
+          <label class="text-xs text-gray-400 mb-1 block">كلمة المرور</label>
+          <input type="password" id="authPassword" required minlength="6"
+            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-400"
+            placeholder="••••••••">
+        </div>
+        <p id="authError" class="text-red-400 text-xs hidden"></p>
+        <button type="submit" id="authSubmitBtn" class="btn-primary w-full font-extrabold py-3 rounded-full flex items-center justify-center gap-2">
+          <span id="authSubmitLabel">تسجيل الدخول</span>
+          <div id="authSpinner" class="spinner hidden"></div>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== WALLET DASHBOARD (بعد تسجيل الدخول) ===================== -->
+  <section id="walletDashboard" class="hidden">
+
+    <!-- Balance Card -->
+    <div class="wallet-card rounded-3xl p-8 mb-8 text-center relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-40 h-40 bg-orange-400/10 rounded-full blur-3xl"></div>
+      <p class="text-gray-300 text-sm mb-2">رصيدك الحالي</p>
+      <div class="flex items-center justify-center gap-2 mb-1">
+        <i data-lucide="wallet" class="w-8 h-8 text-orange-400"></i>
+        <span id="balanceAmount" class="text-5xl font-black brand-grad">0</span>
+        <span class="text-xl text-gray-300 font-bold">د.ل</span>
+      </div>
+      <p class="text-xs text-gray-500">يُحدَّث الرصيد تلقائيًا فور تفعيل عملية الشحن من الإدارة</p>
+    </div>
+
+    <!-- Top-up Section -->
+    <div class="glass rounded-3xl p-7 mb-8">
+      <h2 class="text-xl font-bold mb-5 flex items-center gap-2">
+        <i data-lucide="plus-circle" class="w-5 h-5 text-orange-400"></i>
+        اشحن رصيدك
+      </h2>
+
+      <!-- Quick amounts -->
+      <div class="grid grid-cols-4 gap-3 mb-5">
+        <button class="quick-amount btn-ghost rounded-xl py-3 text-sm font-bold" data-amount="100">100</button>
+        <button class="quick-amount btn-ghost rounded-xl py-3 text-sm font-bold" data-amount="200">200</button>
+        <button class="quick-amount btn-ghost rounded-xl py-3 text-sm font-bold" data-amount="299">299</button>
+        <button class="quick-amount btn-ghost rounded-xl py-3 text-sm font-bold" data-amount="500">500</button>
+      </div>
+
+      <div class="mb-6">
+        <label class="text-xs text-gray-400 mb-1 block">أو أدخل مبلغًا مخصصًا (د.ل)</label>
+        <input type="number" id="customAmount" min="10" placeholder="مثال: 350"
+          class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-400">
+      </div>
+
+      <!-- Payment methods -->
+      <p class="text-xs text-gray-400 mb-3">اختر طريقة الدفع</p>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="method-card selected glass rounded-2xl p-4 border-2 border-transparent" data-method="bank">
+          <div class="flex items-center gap-3">
+            <i data-lucide="landmark" class="w-6 h-6 text-blue-400"></i>
+            <div>
+              <p class="font-bold text-sm">تحويل مصرفي</p>
+              <p class="text-xs text-gray-500">حوّل ثم أدخل رقم المرجع</p>
+            </div>
+          </div>
+        </div>
+        <div class="method-card glass rounded-2xl p-4 border-2 border-transparent" data-method="sadad">
+          <div class="flex items-center gap-3">
+            <i data-lucide="smartphone" class="w-6 h-6 text-orange-400"></i>
+            <div>
+              <p class="font-bold text-sm">سداد / موبي كاش</p>
+              <p class="text-xs text-gray-500">حوّل ثم أدخل رقم المرجع</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bank details box -->
+      <div id="bankDetailsBox" class="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 mb-6 text-sm space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-gray-400">اسم المستفيد:</span>
+          <span class="font-bold">منصة مسار للتدريب</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-400">رقم الحساب / IBAN:</span>
+          <div class="flex items-center gap-2">
+            <span class="font-bold" id="ibanText">LY00 0000 0000 0000 0000 000</span>
+            <button id="copyIbanBtn" class="text-orange-400 hover:text-orange-300">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 pt-1">⚠️ استبدل هذه البيانات ببيانات حسابك المصرفي الفعلي</p>
+      </div>
+
+      <!-- Reference number input (instead of file upload) -->
+      <div class="mb-4">
+        <label class="text-xs text-gray-400 mb-1 block">رقم مرجع التحويل / آخر 4 أرقام من الإيصال</label>
+        <input type="text" id="refNumber" placeholder="مثال: 8231"
+          class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-400">
+      </div>
+      <div class="mb-6">
+        <label class="text-xs text-gray-400 mb-1 block">رقم هاتفك (الذي أرسلت منه التحويل)</label>
+        <input type="tel" id="senderPhone" placeholder="مثال: 0912345678"
+          class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-400">
+      </div>
+
+      <!-- WhatsApp instruction box -->
+      <div class="bg-green-500/10 border border-green-500/20 rounded-2xl p-4 mb-6 flex items-start gap-3">
+        <i data-lucide="message-circle" class="w-5 h-5 text-green-400 mt-0.5 shrink-0"></i>
+        <p class="text-xs text-gray-300 leading-relaxed">
+          بعد إرسال الطلب أدناه، أرسل <span class="font-bold text-white">صورة إيصال التحويل</span> عبر واتساب على الرقم
+          <span class="font-bold text-white" id="whatsappNumberText">0910000000</span>
+          مع ذكر رقم المرجع الذي أدخلته، لتسريع تفعيل رصيدك.
+        </p>
+      </div>
+
+      <p id="topupError" class="text-red-400 text-xs mb-3 hidden"></p>
+      <p id="topupSuccess" class="text-green-400 text-xs mb-3 hidden"></p>
+
+      <div class="grid sm:grid-cols-2 gap-3">
+        <button id="submitTopupBtn" class="btn-primary w-full font-extrabold py-3 rounded-full flex items-center justify-center gap-2">
+          <span id="topupSubmitLabel">إرسال طلب الشحن</span>
+          <div id="topupSpinner" class="spinner hidden"></div>
+        </button>
+        <a id="whatsappLinkBtn" href="#" target="_blank" class="btn-whatsapp w-full font-extrabold py-3 rounded-full flex items-center justify-center gap-2">
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+          إرسال الإيصال عبر واتساب
+        </a>
+      </div>
+      <p class="text-xs text-gray-500 mt-3 text-center">سيُراجع طلبك خلال 24 ساعة، وسيُضاف الرصيد فور التأكيد</p>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="glass rounded-3xl p-7">
+      <h2 class="text-xl font-bold mb-5 flex items-center gap-2">
+        <i data-lucide="history" class="w-5 h-5 text-blue-400"></i>
+        سجل المعاملات
+      </h2>
+      <div id="transactionsList" class="space-y-3">
+        <p class="text-gray-500 text-sm text-center py-6">لا توجد معاملات بعد</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+  lucide.createIcons();
+
+  /* =====================================================================
+     ⚙️ إعدادات Firebase الفعلية لمشروع masar-platform-1ca3d
+     ===================================================================== */
+  const firebaseConfig = {
+    apiKey: "AIzaSyAazQ6pmbNMLTBlcaS2jiNdet1qjm6BPYE",
+    authDomain: "masar-platform-1ca3d.firebaseapp.com",
+    projectId: "masar-platform-1ca3d",
+    storageBucket: "masar-platform-1ca3d.firebasestorage.app",
+    messagingSenderId: "800621487781",
+    appId: "1:800621487781:web:9d2eb646d01f242ee5cf4c",
+    measurementId: "G-T6DB62QR99"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  /* ===================== رقم واتساب الإدارة (رقم حسن الفعلي) ===================== */
+  const ADMIN_WHATSAPP_NUMBER = "218911479697"; // بصيغة دولية بدون + أو أصفار في البداية
+
+  /* ===================== عناصر DOM ===================== */
+  const authGate = document.getElementById('authGate');
+  const walletDashboard = document.getElementById('walletDashboard');
+  const userEmailLabel = document.getElementById('userEmailLabel');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  const tabLogin = document.getElementById('tabLogin');
+  const tabRegister = document.getElementById('tabRegister');
+  const authForm = document.getElementById('authForm');
+  const authEmail = document.getElementById('authEmail');
+  const authPassword = document.getElementById('authPassword');
+  const authError = document.getElementById('authError');
+  const authSubmitLabel = document.getElementById('authSubmitLabel');
+  const authSpinner = document.getElementById('authSpinner');
+
+  const balanceAmount = document.getElementById('balanceAmount');
+  const quickAmountBtns = document.querySelectorAll('.quick-amount');
+  const customAmount = document.getElementById('customAmount');
+  const methodCards = document.querySelectorAll('.method-card');
+  const bankDetailsBox = document.getElementById('bankDetailsBox');
+  const copyIbanBtn = document.getElementById('copyIbanBtn');
+  const ibanText = document.getElementById('ibanText');
+  const refNumber = document.getElementById('refNumber');
+  const senderPhone = document.getElementById('senderPhone');
+  const whatsappNumberText = document.getElementById('whatsappNumberText');
+  const whatsappLinkBtn = document.getElementById('whatsappLinkBtn');
+  const submitTopupBtn = document.getElementById('submitTopupBtn');
+  const topupSubmitLabel = document.getElementById('topupSubmitLabel');
+  const topupSpinner = document.getElementById('topupSpinner');
+  const topupError = document.getElementById('topupError');
+  const topupSuccess = document.getElementById('topupSuccess');
+  const transactionsList = document.getElementById('transactionsList');
+
+  let isLoginMode = true;
+  let selectedAmount = 100;
+  let selectedMethod = 'bank';
+  let currentUser = null;
+  let balanceUnsubscribe = null;
+  let txUnsubscribe = null;
+
+  // عرض رقم واتساب الإدارة بصيغة مقروءة للمستخدم (218911479697 -> 0911479697)
+  whatsappNumberText.textContent = '0' + ADMIN_WHATSAPP_NUMBER.slice(3);
+
+  function updateWhatsappLink() {
+    const msg = encodeURIComponent(
+      `مرحبًا، أرغب بتفعيل شحن رصيد محفظتي في منصة مسار.\nالمبلغ: ${selectedAmount} د.ل\nطريقة الدفع: ${selectedMethod === 'bank' ? 'تحويل مصرفي' : 'سداد/موبي كاش'}\nرقم المرجع: ${refNumber.value || '—'}\nرقم هاتفي: ${senderPhone.value || '—'}`
+    );
+    whatsappLinkBtn.href = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${msg}`;
+  }
+  updateWhatsappLink();
+  [refNumber, senderPhone, customAmount].forEach(el => el.addEventListener('input', updateWhatsappLink));
+
+  /* ===================== تبديل تسجيل الدخول / إنشاء حساب ===================== */
+  tabLogin.addEventListener('click', () => {
+    isLoginMode = true;
+    tabLogin.classList.add('bg-white/10');
+    tabLogin.classList.remove('text-gray-400');
+    tabRegister.classList.remove('bg-white/10');
+    tabRegister.classList.add('text-gray-400');
+    authSubmitLabel.textContent = 'تسجيل الدخول';
+  });
+  tabRegister.addEventListener('click', () => {
+    isLoginMode = false;
+    tabRegister.classList.add('bg-white/10');
+    tabRegister.classList.remove('text-gray-400');
+    tabLogin.classList.remove('bg-white/10');
+    tabLogin.classList.add('text-gray-400');
+    authSubmitLabel.textContent = 'إنشاء حساب';
+  });
+
+  authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    authError.classList.add('hidden');
+    authSpinner.classList.remove('hidden');
+    authSubmitLabel.textContent = isLoginMode ? 'جارٍ الدخول...' : 'جارٍ الإنشاء...';
+
+    try {
+      if (isLoginMode) {
+        await auth.signInWithEmailAndPassword(authEmail.value, authPassword.value);
+      } else {
+        const cred = await auth.createUserWithEmailAndPassword(authEmail.value, authPassword.value);
+        // إنشاء مستند المحفظة الأولي عند التسجيل
+        await db.collection('users').doc(cred.user.uid).set({
+          email: authEmail.value,
+          wallet: { balance: 0, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }
+        });
+      }
+    } catch (err) {
+      authError.textContent = translateFirebaseError(err.code);
+      authError.classList.remove('hidden');
+    } finally {
+      authSpinner.classList.add('hidden');
+      authSubmitLabel.textContent = isLoginMode ? 'تسجيل الدخول' : 'إنشاء حساب';
+    }
+  });
+
+  logoutBtn.addEventListener('click', () => auth.signOut());
+
+  /* ===================== مراقبة حالة تسجيل الدخول ===================== */
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      currentUser = user;
+      authGate.classList.add('hidden');
+      walletDashboard.classList.remove('hidden');
+      logoutBtn.classList.remove('hidden');
+      userEmailLabel.textContent = user.email;
+      userEmailLabel.classList.remove('hidden');
+      listenToWallet(user.uid);
+      listenToTransactions(user.uid);
+    } else {
+      currentUser = null;
+      authGate.classList.remove('hidden');
+      walletDashboard.classList.add('hidden');
+      logoutBtn.classList.add('hidden');
+      userEmailLabel.classList.add('hidden');
+      if (balanceUnsubscribe) balanceUnsubscribe();
+      if (txUnsubscribe) txUnsubscribe();
+    }
+  });
+
+  /* ===================== الاستماع لتحديثات الرصيد لحظيًا ===================== */
+  function listenToWallet(uid) {
+    balanceUnsubscribe = db.collection('users').doc(uid)
+      .onSnapshot((doc) => {
+        const data = doc.data();
+        const balance = data?.wallet?.balance ?? 0;
+        balanceAmount.textContent = balance.toLocaleString('en-US');
+      });
+  }
+
+  /* ===================== الاستماع لسجل المعاملات لحظيًا ===================== */
+  function listenToTransactions(uid) {
+    txUnsubscribe = db.collection('walletTransactions')
+      .where('userId', '==', uid)
+      .orderBy('createdAt', 'desc')
+      .limit(20)
+      .onSnapshot((snapshot) => {
+        if (snapshot.empty) {
+          transactionsList.innerHTML = '<p class="text-gray-500 text-sm text-center py-6">لا توجد معاملات بعد</p>';
+          return;
+        }
+        transactionsList.innerHTML = '';
+        snapshot.forEach((doc) => {
+          const tx = doc.data();
+          const statusClass = tx.status === 'completed' ? 'status-completed'
+                             : tx.status === 'rejected' ? 'status-rejected'
+                             : 'status-pending';
+          const statusLabel = tx.status === 'completed' ? 'مكتملة'
+                             : tx.status === 'rejected' ? 'مرفوضة'
+                             : 'قيد المراجعة';
+          const methodLabel = tx.method === 'bank' ? 'تحويل مصرفي' : tx.method === 'sadad' ? 'سداد' : tx.method;
+          const date = tx.createdAt?.toDate ? tx.createdAt.toDate().toLocaleDateString('ar-LY') : '—';
+
+          const row = document.createElement('div');
+          row.className = 'flex items-center justify-between p-3 rounded-xl bg-white/5';
+          row.innerHTML = `
+            <div>
+              <p class="font-bold text-sm">${tx.amount.toLocaleString('en-US')} د.ل <span class="text-xs text-gray-500 font-normal">· ${methodLabel} · مرجع: ${tx.refNumber || '—'}</span></p>
+              <p class="text-xs text-gray-500">${date}</p>
+            </div>
+            <span class="text-xs font-bold px-3 py-1 rounded-full ${statusClass}">${statusLabel}</span>
+          `;
+          transactionsList.appendChild(row);
+        });
+      });
+  }
+
+  /* ===================== اختيار المبلغ ===================== */
+  quickAmountBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedAmount = +btn.dataset.amount;
+      customAmount.value = '';
+      quickAmountBtns.forEach(b => b.classList.remove('btn-primary'));
+      btn.classList.add('btn-primary');
+      updateWhatsappLink();
+    });
+  });
+  customAmount.addEventListener('input', () => {
+    selectedAmount = +customAmount.value || 0;
+    quickAmountBtns.forEach(b => b.classList.remove('btn-primary'));
+  });
+
+  /* ===================== اختيار طريقة الدفع ===================== */
+  methodCards.forEach(card => {
+    card.addEventListener('click', () => {
+      methodCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedMethod = card.dataset.method;
+      bankDetailsBox.classList.remove('hidden');
+      updateWhatsappLink();
+    });
+  });
+
+  /* ===================== نسخ رقم الحساب ===================== */
+  copyIbanBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(ibanText.textContent.trim());
+    copyIbanBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-green-400"></i>';
+    lucide.createIcons();
+    setTimeout(() => {
+      copyIbanBtn.innerHTML = '<i data-lucide="copy" class="w-4 h-4"></i>';
+      lucide.createIcons();
+    }, 1500);
+  });
+
+  /* ===================== إرسال طلب الشحن (بدون رفع ملفات) ===================== */
+  submitTopupBtn.addEventListener('click', async () => {
+    topupError.classList.add('hidden');
+    topupSuccess.classList.add('hidden');
+
+    if (!selectedAmount || selectedAmount < 10) {
+      topupError.textContent = 'الرجاء إدخال مبلغ صحيح (10 د.ل على الأقل)';
+      topupError.classList.remove('hidden');
+      return;
+    }
+    if (!refNumber.value.trim()) {
+      topupError.textContent = 'الرجاء إدخال رقم مرجع التحويل';
+      topupError.classList.remove('hidden');
+      return;
+    }
+    if (!senderPhone.value.trim()) {
+      topupError.textContent = 'الرجاء إدخال رقم هاتفك';
+      topupError.classList.remove('hidden');
+      return;
+    }
+
+    submitTopupBtn.disabled = true;
+    topupSpinner.classList.remove('hidden');
+    topupSubmitLabel.textContent = 'جارٍ الإرسال...';
+
+    try {
+      // إنشاء طلب شحن جديد بحالة "قيد المراجعة" — بدون أي رفع ملفات
+      await db.collection('walletTransactions').add({
+        userId: currentUser.uid,
+        type: 'topup',
+        amount: selectedAmount,
+        method: selectedMethod,
+        refNumber: refNumber.value.trim(),
+        senderPhone: senderPhone.value.trim(),
+        status: 'pending',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      topupSuccess.textContent = 'تم إرسال طلبك بنجاح! لا تنسَ إرسال صورة الإيصال عبر واتساب لتسريع التفعيل.';
+      topupSuccess.classList.remove('hidden');
+      refNumber.value = '';
+      senderPhone.value = '';
+      customAmount.value = '';
+      updateWhatsappLink();
+    } catch (err) {
+      topupError.textContent = 'حدث خطأ أثناء الإرسال، حاول مرة أخرى: ' + err.message;
+      topupError.classList.remove('hidden');
+    } finally {
+      submitTopupBtn.disabled = false;
+      topupSpinner.classList.add('hidden');
+      topupSubmitLabel.textContent = 'إرسال طلب الشحن';
+    }
+  });
+
+  /* ===================== ترجمة أخطاء Firebase الشائعة ===================== */
+  function translateFirebaseError(code) {
+    const map = {
+      'auth/email-already-in-use': 'هذا البريد الإلكتروني مُستخدم بالفعل',
+      'auth/invalid-email': 'صيغة البريد الإلكتروني غير صحيحة',
+      'auth/weak-password': 'كلمة المرور ضعيفة جدًا (6 أحرف على الأقل)',
+      'auth/user-not-found': 'لا يوجد حساب بهذا البريد الإلكتروني',
+      'auth/wrong-password': 'كلمة المرور غير صحيحة',
+      'auth/invalid-credential': 'بيانات الدخول غير صحيحة'
+    };
+    return map[code] || 'حدث خطأ غير متوقع، حاول مرة أخرى';
+  }
+</script>
+
+</body>
+</html>
