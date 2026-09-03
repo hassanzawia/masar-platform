@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مسار | خطوتك التالية نحو الاحتراف</title>
+<meta name="description" content="منصة مسار للتدريب الاحترافي في جميع المجالات، بشهادات معتمدة ومدربين خبراء. ابدأ رحلتك المهنية اليوم.">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- AOS Scroll Animation -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<!-- Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+  :root{
+    --navy:#0B1220;
+    --navy-2:#111A2E;
+    --orange:#F59E0B;
+    --orange-light:#FBBF24;
+    --blue:#2563EB;
+    --ink:#0F172A;
+  }
+  *{font-family:'Tajawal', sans-serif;}
+  html{scroll-behavior:smooth;}
+  body{background:#070B14; color:#E6EAF2;}
+
+  .gradient-hero{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(245,158,11,.18), transparent 60%),
+      radial-gradient(900px 500px at 10% 10%, rgba(37,99,235,.15), transparent 55%),
+      linear-gradient(180deg, #070B14 0%, #0B1220 60%, #0B1220 100%);
+  }
+  .glass{
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+  }
+  .brand-grad{
+    background: linear-gradient(90deg, var(--orange-light), var(--orange));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .btn-primary{
+    background: linear-gradient(90deg, var(--orange-light), var(--orange));
+    color:#0B1220;
+    box-shadow: 0 10px 30px -8px rgba(245,158,11,.55);
+    transition: all .25s ease;
+  }
+  .btn-primary:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px -8px rgba(245,158,11,.7);
+  }
+  .btn-ghost{
+    border:1px solid rgba(255,255,255,.18);
+    transition: all .25s ease;
+  }
+  .btn-ghost:hover{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.3); }
+
+  .card-hover{ transition: all .35s cubic-bezier(.2,.8,.2,1); }
+  .card-hover:hover{ transform: translateY(-8px); box-shadow: 0 24px 48px -16px rgba(0,0,0,.5); border-color: rgba(245,158,11,.4) !important; }
+
+  .divider-brand{
+    height:3px; width:64px;
+    background: linear-gradient(90deg, var(--orange), var(--blue));
+    border-radius: 999px;
+  }
+
+  .marquee-track{ animation: marquee 28s linear infinite; }
+  @keyframes marquee{ 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+  .pulse-dot{ animation: pulse-dot 1.6s ease-in-out infinite; }
+  @keyframes pulse-dot{ 0%,100%{opacity:1} 50%{opacity:.35} }
+
+  .float-slow{ animation: float 6s ease-in-out infinite; }
+  @keyframes float{ 0%,100%{ transform: translateY(0px);} 50%{ transform: translateY(-14px);} }
+
+  .faq-content{ max-height:0; overflow:hidden; transition: max-height .35s ease; }
+  .faq-item.active .faq-content{ max-height: 400px; }
+  .faq-item.active .faq-icon{ transform: rotate(45deg); }
+  .faq-icon{ transition: transform .3s ease; }
+
+  ::-webkit-scrollbar{ width:10px; }
+  ::-webkit-scrollbar-track{ background:#0B1220; }
+  ::-webkit-scrollbar-thumb{ background: linear-gradient(var(--orange), var(--blue)); border-radius: 10px; }
+
+  .nav-blur{ backdrop-filter: blur(14px); background: rgba(7,11,20,.7); }
+
+  .price-featured{
+    border-image: linear-gradient(135deg, var(--orange), var(--blue)) 1;
+  }
+
+  .counter{ font-variant-numeric: tabular-nums; }
+
+  .track-tag{
+    display:inline-block;
+    font-size:.7rem;
+    font-weight:700;
+    padding:.2rem .7rem;
+    border-radius:999px;
+    background: rgba(37,99,235,.12);
+    color:#60A5FA;
+    border:1px solid rgba(37,99,235,.25);
+  }
+
+  @media (max-width:768px){
+    .hero-title{ font-size: 2.2rem !important; line-height:1.3 !important; }
+  }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- ===================== NAVBAR ===================== -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="flex items-center justify-between h-20">
+      <a href="#" class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center">
+          <i data-lucide="route" class="w-5 h-5 text-[#0B1220]"></i>
+        </div>
+        <span class="font-extrabold text-lg md:text-xl"><span class="brand-grad">مسار</span></span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+        <a href="#tracks" class="hover:text-white transition">المسارات</a>
+        <a href="#how" class="hover:text-white transition">كيف تعمل</a>
+        <a href="#testimonials" class="hover:text-white transition">آراء المتدربين</a>
+        <a href="#pricing" class="hover:text-white transition">الباقات</a>
+        <a href="#faq" class="hover:text-white transition">الأسئلة الشائعة</a>
+      </div>
+      <div class="hidden md:flex items-center gap-3">
+        <a href="wallet.html" class="flex items-center gap-1.5 text-sm font-bold text-gray-300 hover:text-orange-400 transition">
+          <i data-lucide="wallet" class="w-4 h-4"></i>
+          محفظتي
+        </a>
+        <!-- TODO: استبدل href="#" برابط صفحة تسجيل الدخول الفعلية عند جاهزيتها -->
+        <a href="#" class="text-sm font-medium text-gray-300 hover:text-white transition">تسجيل الدخول</a>
+        <a href="#cta" class="btn-primary text-sm font-bold px-5 py-2.5 rounded-full">انطلق في مسارك مجانًا</a>
+      </div>
+      <button id="menuBtn" class="md:hidden text-white">
+        <i data-lucide="menu" class="w-7 h-7"></i>
+      </button>
+    </div>
+  </div>
+  <!-- mobile menu -->
+  <div id="mobileMenu" class="hidden md:hidden glass mx-4 rounded-2xl mb-3 p-5 flex flex-col gap-4 text-sm">
+    <a href="#tracks" class="hover:text-orange-400">المسارات</a>
+    <a href="#how" class="hover:text-orange-400">كيف تعمل</a>
+    <a href="#testimonials" class="hover:text-orange-400">آراء المتدربين</a>
+    <a href="#pricing" class="hover:text-orange-400">الباقات</a>
+    <a href="#faq" class="hover:text-orange-400">الأسئلة الشائعة</a>
+    <a href="wallet.html" class="flex items-center gap-1.5 hover:text-orange-400">
+      <i data-lucide="wallet" class="w-4 h-4"></i>
+      محفظتي
+    </a>
+    <a href="#cta" class="btn-primary text-center font-bold px-5 py-3 rounded-full mt-2">انطلق في مسارك مجانًا</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="gradient-hero pt-40 pb-24 md:pt-52 md:pb-32 relative overflow-hidden">
+  <div class="absolute top-24 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl float-slow"></div>
+  <div class="absolute bottom-0 right-0 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl float-slow" style="animation-delay:2s"></div>
+
+  <div class="max-w-6xl mx-auto px-5 md:px-8 relative z-10 text-center">
+    <div class="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-xs md:text-sm mb-8" data-aos="fade-down">
+      <span class="w-2 h-2 rounded-full bg-blue-400 pulse-dot"></span>
+      <span class="text-gray-200">أكثر من <span class="font-bold text-white">14,000</span> شخص بدأوا مسارهم معنا هذا العام</span>
+    </div>
+
+    <h1 class="hero-title text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6" data-aos="fade-up">
+      من <span class="text-gray-400 line-through decoration-red-500/60">نقطة الصفر</span><br class="hidden md:block">
+      إلى <span class="brand-grad">القمة</span> في مجالك
+    </h1>
+
+    <p class="text-gray-300 text-base md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+      على منصة <span class="font-bold text-white">مسار</span>، نرسم لك طريقًا واضحًا للاحتراف في كل المجالات — إدارة، تقنية، صحة، تسويق، ولغات — بشهادات معتمدة ومدربين خبراء يمشون معك خطوة بخطوة.
+    </p>
+
+    <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-10" data-aos="fade-up" data-aos-delay="200">
+      <a href="#cta" class="btn-primary font-extrabold px-8 py-4 rounded-full text-base w-full md:w-auto flex items-center justify-center gap-2">
+        <i data-lucide="rocket" class="w-5 h-5"></i>
+        انطلق في مسارك المجاني الآن
+      </a>
+      <a href="#tracks" class="btn-ghost font-bold px-8 py-4 rounded-full text-base w-full md:w-auto flex items-center justify-center gap-2 text-gray-200">
+        <i data-lucide="play-circle" class="w-5 h-5"></i>
+        استكشف المسارات
+      </a>
+    </div>
+
+    <p class="text-xs text-gray-500" data-aos="fade-up" data-aos-delay="300">
+      لا حاجة لبطاقة ائتمانية &nbsp;•&nbsp; استرداد كامل خلال 7 أيام &nbsp;•&nbsp; شهادة معتمدة عند وصولك لنهاية كل مسار
+    </p>
+  </div>
+
+  <!-- trust marquee -->
+  <div class="mt-20 relative overflow-hidden" data-aos="fade-up">
+    <div class="flex gap-16 whitespace-nowrap marquee-track opacity-60">
+      <span class="text-xl font-bold">EduTrust</span>
+      <span class="text-xl font-bold">SkillBridge</span>
+      <span class="text-xl font-bold">NextGen Pro</span>
+      <span class="text-xl font-bold">CareerPath</span>
+      <span class="text-xl font-bold">Global Certify</span>
+      <span class="text-xl font-bold">EduTrust</span>
+      <span class="text-xl font-bold">SkillBridge</span>
+      <span class="text-xl font-bold">NextGen Pro</span>
+      <span class="text-xl font-bold">CareerPath</span>
+      <span class="text-xl font-bold">Global Certify</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== PROBLEM -> TRANSFORMATION ===================== -->
+<section class="py-24 border-t border-white/5">
+  <div class="max-w-6xl mx-auto px-5 md:px-8">
+    <div class="grid md:grid-cols-2 gap-14 items-center">
+      <div data-aos="fade-left">
+        <div class="divider-brand mb-5"></div>
+        <h2 class="text-3xl md:text-4xl font-black mb-6 leading-snug">
+          هل تسير <span class="text-red-400">بلا مسار واضح</span> بينما الجميع من حولك يتقدّم؟
+        </h2>
+        <p class="text-gray-400 leading-relaxed mb-6">
+          كل يوم تؤجل فيه تطوير نفسك هو فرصة عمل أو ترقية تذهب لشخص آخر أكثر استعدادًا. المشكلة ليست في قدرتك، بل في غياب مسار تدريبي واضح ومركّز يأخذك من نقطة الصفر إلى الاحتراف.
+        </p>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <i data-lucide="x-circle" class="w-6 h-6 text-red-400 mt-0.5 shrink-0"></i>
+            <span class="text-gray-300">خطوات متفرقة لا تُبنى فوق بعضها ولا تقودك إلى وجهة واضحة</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i data-lucide="x-circle" class="w-6 h-6 text-red-400 mt-0.5 shrink-0"></i>
+            <span class="text-gray-300">محتوى نظري بلا تطبيق عملي أو متابعة حقيقية</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i data-lucide="check-circle-2" class="w-6 h-6 text-blue-400 mt-0.5 shrink-0"></i>
+            <span class="text-white font-semibold">مع منصة مسار: طريق واضح، تطبيق فوري، وشهادة تفتح لك أبوابًا جديدة</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="relative" data-aos="fade-right">
+        <div class="glass rounded-3xl p-8 space-y-6">
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-blue-500/15 flex items-center justify-center">
+              <i data-lucide="target" class="w-7 h-7 text-blue-400"></i>
+            </div>
+            <div>
+              <p class="font-bold text-lg">مسار مصمم لهدفك</p>
+              <p class="text-sm text-gray-400">وليس مجرد دورة عامة</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-orange-400/15 flex items-center justify-center">
+              <i data-lucide="award" class="w-7 h-7 text-orange-400"></i>
+            </div>
+            <div>
+              <p class="font-bold text-lg">شهادة معتمدة قابلة للمشاركة</p>
+              <p class="text-sm text-gray-400">على لينكدإن وسيرتك الذاتية</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-purple-400/15 flex items-center justify-center">
+              <i data-lucide="users" class="w-7 h-7 text-purple-300"></i>
+            </div>
+            <div>
+              <p class="font-bold text-lg">مجتمع ومتابعة من مدربين حقيقيين</p>
+              <p class="text-sm text-gray-400">لست وحدك في الطريق</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRACKS / COURSES ===================== -->
+<section id="tracks" class="py-24 bg-[#0B1220] border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+      <div class="divider-brand mx-auto mb-5"></div>
+      <h2 class="text-3xl md:text-4xl font-black mb-4">اختر <span class="brand-grad">مسارك</span> من بين كل المجالات</h2>
+      <p class="text-gray-400">كل مسار مصمم كطريق متكامل من أول خطوة حتى الاحتراف.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <div class="glass rounded-3xl p-7 card-hover" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-14 h-14 rounded-2xl bg-blue-500/15 flex items-center justify-center mb-5">
+          <i data-lucide="briefcase" class="w-7 h-7 text-blue-400"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">مسار الإدارة والقيادة</h3>
+        <p class="text-gray-400 text-sm mb-5">من موظف مُنفّذ إلى قائد فريق يتّخذ القرار ويقود المشاريع بثقة.</p>
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <span>32 محطة تدريبية</span><span>+4,200 سالك للمسار</span>
+        </div>
+      </div>
+
+      <div class="glass rounded-3xl p-7 card-hover" data-aos="fade-up" data-aos-delay="80">
+        <div class="w-14 h-14 rounded-2xl bg-blue-500/15 flex items-center justify-center mb-5">
+          <i data-lucide="code-2" class="w-7 h-7 text-blue-400"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">مسار التقنية والبرمجة</h3>
+        <p class="text-gray-400 text-sm mb-5">من الصفر البرمجي إلى بناء منتجات رقمية حقيقية وتحليل البيانات باحتراف.</p>
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <span>48 محطة تدريبية</span><span>+6,100 سالك للمسار</span>
+        </div>
+      </div>
+
+      <div class="glass rounded-3xl p-7 card-hover" data-aos="fade-up" data-aos-delay="160">
+        <div class="w-14 h-14 rounded-2xl bg-red-500/15 flex items-center justify-center mb-5">
+          <i data-lucide="stethoscope" class="w-7 h-7 text-red-400"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">مسار الصحة والطب</h3>
+        <p class="text-gray-400 text-sm mb-5">تدرّج عملي عبر حالات سريرية وتفاعلات دوائية يواكب تطور الكوادر الصحية.</p>
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <span>26 محطة تدريبية</span><span>+3,500 سالك للمسار</span>
+        </div>
+      </div>
+
+      <div class="glass rounded-3xl p-7 card-hover" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-14 h-14 rounded-2xl bg-orange-400/15 flex items-center justify-center mb-5">
+          <i data-lucide="megaphone" class="w-7 h-7 text-orange-400"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">مسار التسويق والمبيعات</h3>
+        <p class="text-gray-400 text-sm mb-5">خطوات عملية من فكرة إلى حملة تسويقية مؤثرة وعلامة تجارية تُذكر.</p>
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <span>29 محطة تدريبية</span><span>+5,000 سالك للمسار</span>
+        </div>
+      </div>
+
+      <div class="glass rounded-3xl p-7 card-hover" data-aos="fade-up" data-aos-delay="80">
+        <div class="w-14 h-14 rounded-2xl bg-purple-400/15 flex items-center justify-center mb-5">
+          <i data-lucide="languages" class="w-7 h-7 text-purple-300"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">مسار اللغات</h3>
+        <p class="text-gray-400 text-sm mb-5">رحلة تدريجية نحو الطلاقة في الإنجليزية والفرنسية للعمل والدراسة والمحادثة.</p>
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <span>18 محطة تدريبية</span><span>+2,900 سالك للمسار</span>
+        </div>
+      </div>
+
+      <div class="glass rounded-3xl p-7 card-hover" data-aos="fade-up" data-aos-delay="160">
+        <div class="w-14 h-14 rounded-2xl bg-green-400/15 flex items-center justify-center mb-5">
+          <i data-lucide="palette" class="w-7 h-7 text-green-400"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">مسار التصميم والإبداع</h3>
+        <p class="text-gray-400 text-sm mb-5">من الفكرة إلى الهوية البصرية المتكاملة، عبر تصميم الجرافيك وتجربة المستخدم.</p>
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <span>21 محطة تدريبية</span><span>+3,300 سالك للمسار</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section id="how" class="py-24 border-t border-white/5">
+  <div class="max-w-6xl mx-auto px-5 md:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+      <div class="divider-brand mx-auto mb-5"></div>
+      <h2 class="text-3xl md:text-4xl font-black mb-4">مسارك يبدأ بـ <span class="brand-grad">4 خطوات فقط</span></h2>
+      <p class="text-gray-400">لا تعقيد ولا انتظار — تنطلق في مسارك خلال دقائق.</p>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-6 relative">
+      <div class="hidden md:block absolute top-8 right-[12%] left-[12%] h-[2px] bg-gradient-to-l from-orange-400/40 via-blue-400/40 to-transparent"></div>
+
+      <div class="text-center relative" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-black text-xl text-[#0B1220] mb-5 relative z-10">١</div>
+        <h3 class="font-bold text-lg mb-2">سجّل مجانًا</h3>
+        <p class="text-gray-400 text-sm">إنشاء الحساب يستغرق أقل من دقيقة</p>
+      </div>
+      <div class="text-center relative" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-black text-xl text-[#0B1220] mb-5 relative z-10">٢</div>
+        <h3 class="font-bold text-lg mb-2">اختر مسارك</h3>
+        <p class="text-gray-400 text-sm">من بين مسارات متعددة تناسب هدفك</p>
+      </div>
+      <div class="text-center relative" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-black text-xl text-[#0B1220] mb-5 relative z-10">٣</div>
+        <h3 class="font-bold text-lg mb-2">تدرّب عمليًا</h3>
+        <p class="text-gray-400 text-sm">محاضرات، تمارين، ومتابعة مباشرة</p>
+      </div>
+      <div class="text-center relative" data-aos="fade-up" data-aos-delay="300">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-black text-xl text-[#0B1220] mb-5 relative z-10">٤</div>
+        <h3 class="font-bold text-lg mb-2">احصل على شهادتك</h3>
+        <p class="text-gray-400 text-sm">شهادة معتمدة تفتح لك فرصًا جديدة</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STATS COUNTER ===================== -->
+<section class="py-20 bg-[#0B1220] border-y border-white/5">
+  <div class="max-w-6xl mx-auto px-5 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <div data-aos="zoom-in">
+      <p class="text-4xl md:text-5xl font-black brand-grad counter" data-target="14200">0</p>
+      <p class="text-gray-400 text-sm mt-2">متدرب نشط</p>
+    </div>
+    <div data-aos="zoom-in" data-aos-delay="100">
+      <p class="text-4xl md:text-5xl font-black brand-grad counter" data-target="174">0</p>
+      <p class="text-gray-400 text-sm mt-2">مسار ودورة</p>
+    </div>
+    <div data-aos="zoom-in" data-aos-delay="200">
+      <p class="text-4xl md:text-5xl font-black brand-grad counter" data-target="96">0</p>
+      <p class="text-gray-400 text-sm mt-2">% نسبة الرضا</p>
+    </div>
+    <div data-aos="zoom-in" data-aos-delay="300">
+      <p class="text-4xl md:text-5xl font-black brand-grad counter" data-target="4300">0</p>
+      <p class="text-gray-400 text-sm mt-2">شهادة صادرة</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section id="testimonials" class="py-24 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+      <div class="divider-brand mx-auto mb-5"></div>
+      <h2 class="text-3xl md:text-4xl font-black mb-4">قصص <span class="brand-grad">نجاح حقيقية</span> من كل مسار</h2>
+      <p class="text-gray-400">لا نطلب منك أن تصدّقنا — استمع لسالكي كل مسار مباشرة.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- مسار الإدارة والقيادة -->
+      <div class="glass rounded-3xl p-7" data-aos="fade-up" data-aos-delay="0">
+        <span class="track-tag mb-4 inline-block">مسار الإدارة والقيادة</span>
+        <div class="flex gap-1 mb-4 text-orange-400">★★★★★</div>
+        <p class="text-gray-300 leading-relaxed mb-6">"حصلت على ترقية لمنصب مدير فريق بعد إتمام هذا المسار مباشرة. تعلّمت كيف أتّخذ قرارات صعبة بثقة، والشهادة المعتمدة كانت نقطة تحوّل في ملفي الوظيفي."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-bold text-[#0B1220]">ع.ز</div>
+          <div>
+            <p class="font-bold text-sm">عبدالرحمن زاوية</p>
+            <p class="text-xs text-gray-500">مدير فرع، قطاع الخدمات</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- مسار التقنية والبرمجة -->
+      <div class="glass rounded-3xl p-7" data-aos="fade-up" data-aos-delay="80">
+        <span class="track-tag mb-4 inline-block">مسار التقنية والبرمجة</span>
+        <div class="flex gap-1 mb-4 text-orange-400">★★★★★</div>
+        <p class="text-gray-300 leading-relaxed mb-6">"خلال 6 أسابيع فقط قطعت مسارًا كاملاً من مبتدئ لأتولى مشروعًا حقيقيًا في عملي. المتابعة الفردية من المدربين كانت الفرق الحقيقي مقارنة بمنصات أخرى جرّبتها."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-bold text-[#0B1220]">أ.ز</div>
+          <div>
+            <p class="font-bold text-sm">أيوب زاوية</p>
+            <p class="text-xs text-gray-500">مطوّر ويب مستقل</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- مسار الصحة والطب -->
+      <div class="glass rounded-3xl p-7" data-aos="fade-up" data-aos-delay="160">
+        <span class="track-tag mb-4 inline-block">مسار الصحة والطب</span>
+        <div class="flex gap-1 mb-4 text-orange-400">★★★★★</div>
+        <p class="text-gray-300 leading-relaxed mb-6">"الحالات السريرية التطبيقية غيّرت طريقة تعاملي مع المرضى فعليًا. لأول مرة أشعر أن التدريب يحاكي واقع العمل اليومي وليس مجرد نظري."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-bold text-[#0B1220]">ف.ح</div>
+          <div>
+            <p class="font-bold text-sm">فاطمة الحضيري</p>
+            <p class="text-xs text-gray-500">صيدلانية إكلينيكية</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- مسار التسويق والمبيعات -->
+      <div class="glass rounded-3xl p-7" data-aos="fade-up" data-aos-delay="0">
+        <span class="track-tag mb-4 inline-block">مسار التسويق والمبيعات</span>
+        <div class="flex gap-1 mb-4 text-orange-400">★★★★★</div>
+        <p class="text-gray-300 leading-relaxed mb-6">"ضاعفت مبيعات مشروعي الصغير خلال شهرين فقط بتطبيق ما تعلّمته في الحملات الممولة. أفضل استثمار قمت به لنفسي هذا العام دون منازع."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-bold text-[#0B1220]">س.م</div>
+          <div>
+            <p class="font-bold text-sm">سارة المصري</p>
+            <p class="text-xs text-gray-500">صاحبة مشروع تجاري</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- مسار اللغات -->
+      <div class="glass rounded-3xl p-7" data-aos="fade-up" data-aos-delay="80">
+        <span class="track-tag mb-4 inline-block">مسار اللغات</span>
+        <div class="flex gap-1 mb-4 text-orange-400">★★★★★</div>
+        <p class="text-gray-300 leading-relaxed mb-6">"انتقلت من عدم القدرة على تكوين جملة كاملة إلى إجراء مقابلة عمل بالإنجليزية بثقة تامة، خلال أربعة أشهر فقط من المتابعة المنتظمة."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-bold text-[#0B1220]">م.ط</div>
+          <div>
+            <p class="font-bold text-sm">محمد الطرابلسي</p>
+            <p class="text-xs text-gray-500">موظف علاقات دولية</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- مسار التصميم والإبداع -->
+      <div class="glass rounded-3xl p-7" data-aos="fade-up" data-aos-delay="160">
+        <span class="track-tag mb-4 inline-block">مسار التصميم والإبداع</span>
+        <div class="flex gap-1 mb-4 text-orange-400">★★★★★</div>
+        <p class="text-gray-300 leading-relaxed mb-6">"بنيت هوية بصرية كاملة لعلامتي التجارية بنفسي بعد إتمام المسار، ووفّرت آلاف الدنانير كنت سأدفعها لمصمم خارجي. المحتوى عملي 100%."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center font-bold text-[#0B1220]">ن.ب</div>
+          <div>
+            <p class="font-bold text-sm">نور البرعصي</p>
+            <p class="text-xs text-gray-500">مصممة جرافيك مستقلة</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRICING ===================== -->
+<section id="pricing" class="py-24 bg-[#0B1220] border-t border-white/5">
+  <div class="max-w-6xl mx-auto px-5 md:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+      <div class="divider-brand mx-auto mb-5"></div>
+      <h2 class="text-3xl md:text-4xl font-black mb-4">اختر <span class="brand-grad">نقطة انطلاقك</span></h2>
+      <p class="text-gray-400">ابدأ من حيث أنت، أو تدرّج نحو وصول كامل لكل المسارات.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 items-stretch">
+
+      <div class="glass rounded-3xl p-8 flex flex-col" data-aos="fade-up" data-aos-delay="0">
+        <h3 class="font-bold text-lg mb-1">نقطة الانطلاق</h3>
+        <p class="text-gray-500 text-sm mb-6">لتجربة المنصة أولًا</p>
+        <p class="text-4xl font-black mb-6">مجانًا</p>
+        <ul class="space-y-3 text-sm text-gray-300 mb-8 flex-1">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> الوصول لدورة تجريبية واحدة</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> مجتمع المتدربين</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> شهادة مشاركة</li>
+        </ul>
+        <a href="#cta" class="btn-ghost text-center font-bold py-3 rounded-full">ابدأ مجانًا</a>
+      </div>
+
+      <div class="rounded-3xl p-8 flex flex-col relative border-2 price-featured bg-gradient-to-b from-white/5 to-transparent scale-[1.03]" data-aos="fade-up" data-aos-delay="100">
+        <span class="absolute -top-4 right-1/2 translate-x-1/2 bg-gradient-to-l from-orange-400 to-blue-400 text-[#0B1220] text-xs font-black px-4 py-1.5 rounded-full whitespace-nowrap">✨ الأكثر طلبًا</span>
+        <h3 class="font-bold text-lg mb-1 mt-2">المسار الكامل</h3>
+        <p class="text-gray-400 text-sm mb-6">للجادين في تطوير مسارهم المهني</p>
+        <p class="text-4xl font-black mb-1 brand-grad">299 د.ل<span class="text-base text-gray-400">/شهريًا</span></p>
+        <p class="text-xs text-gray-500 mb-6 line-through">449 د.ل — عرض التسجيل المبكر</p>
+        <ul class="space-y-3 text-sm text-gray-200 mb-8 flex-1">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> وصول كامل لجميع المسارات</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> شهادات معتمدة لكل مسار</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> متابعة فردية من مدرب مختص</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> تحميل المحتوى للمشاهدة دون اتصال</li>
+        </ul>
+        <a href="wallet.html" class="btn-primary text-center font-extrabold py-3 rounded-full">انطلق في مسارك الآن</a>
+      </div>
+
+      <div class="glass rounded-3xl p-8 flex flex-col" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="font-bold text-lg mb-1">المؤسسات</h3>
+        <p class="text-gray-500 text-sm mb-6">لتدريب فرق العمل والشركات</p>
+        <p class="text-4xl font-black mb-6">تواصل معنا</p>
+        <ul class="space-y-3 text-sm text-gray-300 mb-8 flex-1">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> حسابات غير محدودة للفريق</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> لوحة تحكم لتتبع الأداء</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-blue-400"></i> مسارات مخصصة حسب الحاجة</li>
+        </ul>
+        <a href="#cta" class="btn-ghost text-center font-bold py-3 rounded-full">اطلب عرض سعر</a>
+      </div>
+
+    </div>
+
+    <!-- guarantee -->
+    <div class="glass rounded-2xl p-6 mt-10 flex items-center gap-5 max-w-2xl mx-auto" data-aos="fade-up">
+      <div class="w-14 h-14 rounded-2xl bg-blue-500/15 flex items-center justify-center shrink-0">
+        <i data-lucide="shield-check" class="w-7 h-7 text-blue-400"></i>
+      </div>
+      <p class="text-gray-300 text-sm leading-relaxed">
+        <span class="font-bold text-white">ضمان استرداد كامل خلال 7 أيام.</span>
+        إن لم تشعر بفرق حقيقي في مهاراتك، نُعيد لك المبلغ كاملًا دون أي أسئلة.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" class="py-24 border-t border-white/5">
+  <div class="max-w-3xl mx-auto px-5 md:px-8">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <div class="divider-brand mx-auto mb-5"></div>
+      <h2 class="text-3xl md:text-4xl font-black mb-4">أسئلة <span class="brand-grad">شائعة</span></h2>
+    </div>
+
+    <div class="space-y-4" id="faqList">
+      <div class="faq-item glass rounded-2xl overflow-hidden" data-aos="fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-5 text-right font-bold">
+          <span>هل الشهادات معتمدة فعليًا ويمكن استخدامها في سيرتي الذاتية؟</span>
+          <i data-lucide="plus" class="faq-icon w-5 h-5 text-orange-400 shrink-0"></i>
+        </button>
+        <div class="faq-content px-5">
+          <p class="text-gray-400 text-sm pb-5 leading-relaxed">نعم، جميع الشهادات معتمدة ورقمية قابلة للتحقق، ويمكنك إضافتها مباشرة إلى لينكدإن وسيرتك الذاتية فور إتمام المسار.</p>
+        </div>
+      </div>
+      <div class="faq-item glass rounded-2xl overflow-hidden" data-aos="fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-5 text-right font-bold">
+          <span>كم من الوقت أحتاج يوميًا لإتمام أحد المسارات؟</span>
+          <i data-lucide="plus" class="faq-icon w-5 h-5 text-orange-400 shrink-0"></i>
+        </button>
+        <div class="faq-content px-5">
+          <p class="text-gray-400 text-sm pb-5 leading-relaxed">تتراوح معظم المسارات بين 30-45 دقيقة يوميًا، وتتعلم بالسرعة التي تناسب جدولك، مع إمكانية الإيقاف والمتابعة في أي وقت.</p>
+        </div>
+      </div>
+      <div class="faq-item glass rounded-2xl overflow-hidden" data-aos="fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-5 text-right font-bold">
+          <span>ماذا لو لم يناسبني المسار بعد الاشتراك؟</span>
+          <i data-lucide="plus" class="faq-icon w-5 h-5 text-orange-400 shrink-0"></i>
+        </button>
+        <div class="faq-content px-5">
+          <p class="text-gray-400 text-sm pb-5 leading-relaxed">نوفر ضمان استرداد كامل خلال 7 أيام من الاشتراك بدون أي أسئلة أو تعقيدات.</p>
+        </div>
+      </div>
+      <div class="faq-item glass rounded-2xl overflow-hidden" data-aos="fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-5 text-right font-bold">
+          <span>هل يمكن للشركات تسجيل فرق كاملة؟</span>
+          <i data-lucide="plus" class="faq-icon w-5 h-5 text-orange-400 shrink-0"></i>
+        </button>
+        <div class="faq-content px-5">
+          <p class="text-gray-400 text-sm pb-5 leading-relaxed">بالتأكيد، توفر باقة المؤسسات حسابات غير محدودة ولوحة تحكم لمتابعة تقدّم الفريق بالكامل.</p>
+        </div>
+      </div>
+      <div class="faq-item glass rounded-2xl overflow-hidden" data-aos="fade-up">
+        <button class="faq-toggle w-full flex items-center justify-between p-5 text-right font-bold">
+          <span>هل يمكنني الوصول للمحتوى من الهاتف؟</span>
+          <i data-lucide="plus" class="faq-icon w-5 h-5 text-orange-400 shrink-0"></i>
+        </button>
+        <div class="faq-content px-5">
+          <p class="text-gray-400 text-sm pb-5 leading-relaxed">المنصة متجاوبة بالكامل مع جميع الأجهزة، ويمكنك أيضًا تحميل الدروس لمشاهدتها دون اتصال بالإنترنت.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINAL CTA ===================== -->
+<section id="cta" class="py-24 relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-[#0B1220] via-[#111A2E] to-[#0B1220]"></div>
+  <div class="absolute top-10 right-1/4 w-80 h-80 bg-orange-400/10 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-10 left-1/4 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl"></div>
+
+  <div class="max-w-3xl mx-auto px-5 md:px-8 text-center relative z-10" data-aos="zoom-in">
+    <div class="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-xs md:text-sm mb-8">
+      <i data-lucide="flame" class="w-4 h-4 text-orange-400"></i>
+      <span>العرض التعريفي ينتهي قريبًا — متبقي مقاعد محدودة</span>
+    </div>
+    <h2 class="text-3xl md:text-5xl font-black mb-6 leading-tight">
+      مسارك نحو <span class="brand-grad">النجاح</span> يبدأ بخطوة واحدة
+    </h2>
+    <p class="text-gray-300 mb-10 text-base md:text-lg">
+      انضم اليوم إلى أكثر من 14,000 شخص بدأوا مسارهم بالفعل. خطوتك الأولى تستغرق دقيقة واحدة فقط.
+    </p>
+    <a href="wallet.html" class="btn-primary inline-flex items-center gap-2 font-extrabold px-10 py-4 rounded-full text-lg">
+      <i data-lucide="rocket" class="w-5 h-5"></i>
+      انطلق في مسارك المجاني الآن
+    </a>
+    <p class="text-xs text-gray-500 mt-5">لا حاجة لبطاقة ائتمانية · إلغاء في أي وقت</p>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="py-14 border-t border-white/5 bg-[#070B14]">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="grid md:grid-cols-4 gap-10 mb-10">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center">
+            <i data-lucide="route" class="w-4 h-4 text-[#0B1220]"></i>
+          </div>
+          <span class="font-extrabold">مسار</span>
+        </div>
+        <p class="text-gray-500 text-sm leading-relaxed">منصة تدريب احترافية تضم مسارات متخصصة في جميع المجالات لبناء مستقبل مهني أفضل.</p>
+      </div>
+      <div>
+        <p class="font-bold mb-4 text-sm">المنصة</p>
+        <ul class="space-y-2 text-sm text-gray-500">
+          <li><a href="#tracks" class="hover:text-orange-400">المسارات</a></li>
+          <li><a href="#pricing" class="hover:text-orange-400">الباقات</a></li>
+          <li><a href="wallet.html" class="hover:text-orange-400">محفظتي</a></li>
+          <li><a href="#faq" class="hover:text-orange-400">الأسئلة الشائعة</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-bold mb-4 text-sm">الشركة</p>
+        <ul class="space-y-2 text-sm text-gray-500">
+          <li><a href="#" class="hover:text-orange-400">من نحن</a></li>
+          <li><a href="#" class="hover:text-orange-400">تواصل معنا</a></li>
+          <li><a href="#" class="hover:text-orange-400">الوظائف</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-bold mb-4 text-sm">قانوني</p>
+        <ul class="space-y-2 text-sm text-gray-500">
+          <li><a href="#" class="hover:text-orange-400">سياسة الخصوصية</a></li>
+          <li><a href="#" class="hover:text-orange-400">الشروط والأحكام</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+      <p>© 2026 منصة مسار للتدريب. جميع الحقوق محفوظة.</p>
+      <p>صُمم بعناية ليقودك في كل خطوة من مسارك 🚀</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+  AOS.init({ duration: 700, once: true, offset: 60 });
+
+  // navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 30){ navbar.classList.add('nav-blur'); }
+    else{ navbar.classList.remove('nav-blur'); }
+  });
+
+  // mobile menu
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      if(!isActive) item.classList.add('active');
+    });
+  });
+
+  // counters
+  const counters = document.querySelectorAll('.counter');
+  const runCounter = (el) => {
+    const target = +el.dataset.target;
+    const duration = 1600;
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target).toLocaleString('en-US');
+      if(progress < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString('en-US');
+    };
+    requestAnimationFrame(step);
+  };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        runCounter(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => observer.observe(c));
+</script>
+
+</body>
+</html>
